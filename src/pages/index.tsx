@@ -1,8 +1,5 @@
 import { AppStore } from '@/models/store';
-import {
-    asyncGeolocation,
-    setGeolocation,
-} from '@/redux/slices/geolocationSlice';
+import { asyncGeolocation } from '@/redux/slices/geolocationSlice';
 import { AppDispatch } from '@/redux/store';
 import { WatherAPI } from '@/utilities/weatherAPI';
 import { useEffect } from 'react';

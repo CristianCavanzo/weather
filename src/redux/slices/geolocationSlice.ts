@@ -40,6 +40,7 @@ export const asyncGeolocation = createAsyncThunk(
         }
     }
 );
+
 const initialState: Geolocation = {
     accuracy: 0,
     altitude: null,
