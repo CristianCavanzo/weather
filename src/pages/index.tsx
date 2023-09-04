@@ -1,28 +1,15 @@
-import { AppStore } from '@/models/store';
-import { asyncGeolocation } from '@/redux/slices/geolocationSlice';
+import { asyncGeolocation } from '@/redux/slices/weatherSlice';
 import { AppDispatch } from '@/redux/store';
-import { WatherAPI } from '@/utilities/weatherAPI';
+import getGelocalization from '@/utils/getGeolocalization';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const Home = () => {
-    const geolocation = useSelector((state: AppStore) => state.geolocation);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         dispatch(asyncGeolocation());
     }, []);
-    const handleData = async () => {
-        const weather = new WatherAPI(
-            geolocation.latitude,
-            geolocation.longitude
-        );
-        await weather.getWeather();
-    };
-    return (
-        <div>
-            <button onClick={handleData}>obtener información</button>
-        </div>
-    );
+    return <div>Bienvenido</div>;
 };
 
 export default Home;

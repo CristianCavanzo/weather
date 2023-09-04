@@ -1,14 +1,18 @@
-import { Geolocation } from '@/models/geolocation';
 import { Weather } from '@/models/weather';
-import { WatherAPI } from '@/utilities/weatherAPI';
+import getGelocalization from '@/utils/getGeolocalization';
+import { WatherAPI } from '@/utils/weatherAPI';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const asyncGeolocation = createAsyncThunk(
     'geolocation/asyncGeolocation',
     async (_, { dispatch }) => {
         try {
-            const weather = new WatherAPI()
-            dispatch(setWeather());
+            const { latitude, longitude } = await getGelocalization();
+            const weatherAPI = new WatherAPI(latitude, longitude);
+            const weather = await weatherAPI.getWeather();
+            debugger;
+
+            dispatch(setWeather(weather));
         } catch (error) {
         } finally {
         }

@@ -10,10 +10,12 @@ export class WatherAPI {
                     q: `${this.latitud},${this.longitud}`,
                 },
                 headers: {
-                    'X-RapidAPI-Key': process.env.APIKEY,
+                    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_APIKEY,
                 },
             });
             console.log(data);
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
