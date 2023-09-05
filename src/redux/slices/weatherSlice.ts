@@ -10,8 +10,6 @@ export const asyncGeolocation = createAsyncThunk(
             const { latitude, longitude } = await getGelocalization();
             const weatherAPI = new WatherAPI(latitude, longitude);
             const weather = await weatherAPI.getWeather();
-            debugger;
-
             dispatch(setWeather(weather));
         } catch (error) {
         } finally {

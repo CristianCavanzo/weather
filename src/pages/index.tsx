@@ -1,13 +1,16 @@
 import { asyncGeolocation } from '@/redux/slices/weatherSlice';
-import { AppDispatch } from '@/redux/store';
-import getGelocalization from '@/utils/getGeolocalization';
+import store, { AppDispatch, RootState } from '@/redux/store';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const weather = useSelector((store: RootState) => store.weather);
     useEffect(() => {
-        dispatch(asyncGeolocation());
+        (async () => {
+            await dispatch(asyncGeolocation());
+            console.log(weather);
+        })();
     }, []);
     return <div>Bienvenido</div>;
 };
