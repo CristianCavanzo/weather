@@ -7,6 +7,7 @@ const store = configureStore<AppStore>({
     reducer: {
         weather: weatherSlice,
     },
+    devTools: true,
 });
 
 export default store;
