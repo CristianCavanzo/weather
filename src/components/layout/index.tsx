@@ -1,4 +1,4 @@
-import { montserrat } from '@/font/Montserrat';
+import { NextFont } from 'next/dist/compiled/@next/font';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 const Header = styled.header`
@@ -14,13 +14,14 @@ const LayoutComponent = styled.div`
 `;
 interface Props {
     children: React.ReactNode;
+    font: NextFont;
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, font }: Props) => {
     return (
         <Fragment>
             <Header></Header>
-            <LayoutComponent className={montserrat.className}>
+            <LayoutComponent className={font.className}>
                 {children}
             </LayoutComponent>
         </Fragment>

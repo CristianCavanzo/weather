@@ -1,10 +1,10 @@
 import React from 'react';
 import { Map } from '@/components/SVG';
-import { Weather } from '@/models/weather';
+import { WeatherSlice } from '@/models/weather';
 import { HomeStyled } from './styled-component';
 interface Props {
-    weather: Weather;
-    condition: Weather['current']['condition'];
+    weather: WeatherSlice['condition'];
+    condition: WeatherSlice['condition']['current']['condition'];
     date: string;
 }
 const HomeComponent = ({ weather, date, condition }: Props) => {

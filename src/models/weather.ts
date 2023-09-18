@@ -1,3 +1,11 @@
+export interface WeatherSlice {
+    condition: {
+        location: Location;
+        current: Current;
+    };
+    error: false;
+    loading: false;
+}
 export interface Weather {
     location: Location;
     current: Current;

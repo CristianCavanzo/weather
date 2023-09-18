@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const weather = useSelector((store: RootState) => store.weather);
+    const weather = useSelector((store: RootState) => store.weather.condition);
     useEffect(() => {
         (async () => {
             await dispatch(asyncGeolocation());

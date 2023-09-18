@@ -1,5 +1,5 @@
-import { Weather } from './weather';
+import { WeatherSlice } from './weather';
 
 export interface AppStore {
-    weather: Weather;
+    weather: WeatherSlice;
 }
