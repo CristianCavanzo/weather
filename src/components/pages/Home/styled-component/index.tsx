@@ -23,6 +23,11 @@ export const HomeStyled = styled.section`
         line-height: 11rem;
         font-weight: bold;
     }
+    .home__header-icon {
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+    }
     .home__weather-feels {
     }
 `;

@@ -10,7 +10,10 @@ const LayoutComponent = styled.div`
     height: calc(100vh - 14vh);
     height: calc(100dvh - 14dvh);
     border-radius: 40px 40px 0 0;
-    padding: 32px;
+    padding: 16px;
+    @media (min-width: 500px) {
+        padding: 32px;
+    }
 `;
 interface Props {
     children: React.ReactNode;
