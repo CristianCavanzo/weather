@@ -88,14 +88,14 @@ export const categoriasClima = [
         day: 'Fog',
         night: 'Fog',
         icon: 248,
-        iconLocal: 'Night Fog.png',
+        iconLocal: 'NightWind.png',
     },
     {
         code: 1147,
         day: 'Freezing fog',
         night: 'Freezing fog',
         icon: 260,
-        iconLocal: 'Night Fog.png',
+        iconLocal: 'NightWind.png',
     },
     {
         code: 1150,

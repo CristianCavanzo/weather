@@ -1,4 +1,3 @@
-const date = new Date();
 const days = [
     'Domingo',
     'Lunes',

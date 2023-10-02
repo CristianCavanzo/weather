@@ -4,6 +4,8 @@ import { WeatherSlice } from '@/models/weather';
 import { HomeStyled } from './styled-component';
 import { categoriasClima } from '@/utils/weatherCategories';
 import Image from 'next/image';
+import { WeatherRecommended } from '@/components/card';
+import popularPlaces from '@/utils/popularPlacesWeather';
 
 interface Props {
     weather: WeatherSlice['condition'];
@@ -42,6 +44,15 @@ const HomeComponent = ({ weather, date, condition }: Props) => {
             <p className="home__weather-feels">
                 Feels like {weather.current.feelslike_c}°c
             </p>
+            {popularPlaces.map((place) => (
+                <WeatherRecommended
+                    key={place.name}
+                    lat={place.lat}
+                    lon={place.lon}
+                >
+                    {place.name}
+                </WeatherRecommended>
+            ))}
         </HomeStyled>
     );
 };

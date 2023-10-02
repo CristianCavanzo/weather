@@ -6,7 +6,7 @@ const Header = styled.header`
     height: 14dvh;
 `;
 const LayoutComponent = styled.div`
-    background: white;
+    background: #181a1b;
     height: calc(100vh - 14vh);
     height: calc(100dvh - 14dvh);
     border-radius: 40px 40px 0 0;

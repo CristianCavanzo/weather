@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0%;
     box-sizing: border-box;
+    color: #fff;
 }
 html {
     font-size: 62.5%;
@@ -11,5 +12,5 @@ html {
     font-size: 1.6rem;
 }
 body {
-    background: #eef0f2;
+    background: #202325;
 }

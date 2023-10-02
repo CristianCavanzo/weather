@@ -1,16 +1,33 @@
 import { HomeComponent } from '@/components/pages/Home';
-import { asyncGeolocation } from '@/redux/slices/weatherSlice';
+import { useWeatherAPI } from '@/hooks/useWeather';
+import { asyncGeolocation, setWeather } from '@/redux/slices/weatherSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getDate } from '@/utils/createDate';
-import { useEffect } from 'react';
+import getGelocalization from '@/utils/getGeolocalization';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
     const weather = useSelector((store: RootState) => store.weather.condition);
+    const [geolocalization, setGeolocalization] = useState({
+        longitude: 0,
+        latitude: 0,
+    });
+
+    const weatherConditions = useWeatherAPI(
+        geolocalization.latitude,
+        geolocalization.longitude,
+        'weather'
+    );
+    console.log(weatherConditions);
+
     useEffect(() => {
         (async () => {
-            await dispatch(asyncGeolocation());
+            const { latitude, longitude } = await getGelocalization();
+            setGeolocalization({ latitude, longitude });
+            await dispatch(setWeather(weatherConditions));
+            console.log(weatherConditions);
         })();
     }, []);
     const condition = weather.current.condition;
