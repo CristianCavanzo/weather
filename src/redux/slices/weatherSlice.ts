@@ -7,7 +7,7 @@ export const asyncGeolocation = createAsyncThunk(
     'geolocation/asyncGeolocation',
     async (params, { dispatch }) => {
         try {
-            useWeatherAPI(latitude, longitude, 'weather');
+            dispatch(setWeather(params));
         } catch (error) {
             console.log(error);
         } finally {

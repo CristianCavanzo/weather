@@ -15,22 +15,20 @@ const Home = () => {
         latitude: 0,
     });
 
-    const weatherConditions = useWeatherAPI(
+    const weatherData = useWeatherAPI(
         geolocalization.latitude,
         geolocalization.longitude,
         'weather'
     );
-    console.log(weatherConditions);
 
     useEffect(() => {
         (async () => {
             const { latitude, longitude } = await getGelocalization();
             setGeolocalization({ latitude, longitude });
-            await dispatch(setWeather(weatherConditions));
-            console.log(weatherConditions);
+            dispatch(setWeather(weatherData));
         })();
-    }, []);
-    const condition = weather.current.condition;
+    }, [weatherData]);
+    const condition = weather?.current?.condition;
     const date = getDate(new Date());
     return (
         <HomeComponent condition={condition} date={date} weather={weather} />

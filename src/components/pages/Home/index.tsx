@@ -14,47 +14,56 @@ interface Props {
 }
 const HomeComponent = ({ weather, date, condition }: Props) => {
     const weatherCategory = categoriasClima.find(
-        (clima) => clima.code === condition.code
+        (clima) => clima?.code === condition?.code
     );
     const icon = `/img/${weatherCategory?.iconLocal}`;
-    return (
-        <HomeStyled>
-            <div className="home__header">
-                <div className="home__header-location">
-                    <Map width={24} height={24} />
-                    <p>{weather.location.name}</p>
+    console.log(weather);
+    if (weather?.current) {
+        return (
+            <HomeStyled>
+                <div className="home__header">
+                    <div className="home__header-location">
+                        <Map width={24} height={24} />
+                        <p>{weather.location.name}</p>
+                    </div>
+                    <div className="home__header-icon">
+                        <Image
+                            src={icon}
+                            width={60}
+                            height={60}
+                            alt={
+                                weatherCategory?.iconLocal || 'icono del clima'
+                            }
+                            quality={100}
+                        />
+                        <p>{condition.text}</p>
+                    </div>
                 </div>
-                <div className="home__header-icon">
-                    <Image
-                        src={icon}
-                        width={60}
-                        height={60}
-                        alt={weatherCategory?.iconLocal || 'icono del clima'}
-                        quality={100}
-                    />
-                    <p>{condition.text}</p>
+                <div className="home__date">
+                    <p>{date}</p>
                 </div>
-            </div>
-            <div className="home__date">
-                <p>{date}</p>
-            </div>
-            <div className="home__weather">
-                <p className="home__weather-temp">{weather.current.temp_c}°c</p>
-            </div>
-            <p className="home__weather-feels">
-                Feels like {weather.current.feelslike_c}°c
-            </p>
-            {popularPlaces.map((place) => (
-                <WeatherRecommended
-                    key={place.name}
-                    lat={place.lat}
-                    lon={place.lon}
-                >
-                    {place.name}
-                </WeatherRecommended>
-            ))}
-        </HomeStyled>
-    );
+                <div className="home__weather">
+                    <p className="home__weather-temp">
+                        {weather.current.temp_c}°c
+                    </p>
+                </div>
+                <p className="home__weather-feels">
+                    Feels like {weather.current.feelslike_c}°c
+                </p>
+                {popularPlaces.map((place) => (
+                    <WeatherRecommended
+                        key={place.name}
+                        lat={place.lat}
+                        lon={place.lon}
+                    >
+                        {place.name}
+                    </WeatherRecommended>
+                ))}
+            </HomeStyled>
+        );
+    } else {
+        return <h1>loading...</h1>;
+    }
 };
 
 export { HomeComponent };
