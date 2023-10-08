@@ -17,7 +17,6 @@ const HomeComponent = ({ weather, date, condition }: Props) => {
         (clima) => clima?.code === condition?.code
     );
     const icon = `/img/${weatherCategory?.iconLocal}`;
-    console.log(weather);
     if (weather?.current) {
         return (
             <HomeStyled>

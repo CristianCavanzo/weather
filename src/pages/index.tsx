@@ -1,6 +1,6 @@
 import { HomeComponent } from '@/components/pages/Home';
 import { useWeatherAPI } from '@/hooks/useWeather';
-import { asyncGeolocation, setWeather } from '@/redux/slices/weatherSlice';
+import { setWeather } from '@/redux/slices/weatherSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getDate } from '@/utils/createDate';
 import getGelocalization from '@/utils/getGeolocalization';
@@ -25,11 +25,13 @@ const Home = () => {
         (async () => {
             const { latitude, longitude } = await getGelocalization();
             setGeolocalization({ latitude, longitude });
-            dispatch(setWeather(weatherData));
+            dispatch(setWeather(weatherData.weather));
         })();
     }, [weatherData]);
     const condition = weather?.current?.condition;
     const date = getDate(new Date());
+    if (weatherData.loading) return <h1>Loading...</h1>;
+    if (weatherData.error) return <h1>error</h1>;
     return (
         <HomeComponent condition={condition} date={date} weather={weather} />
     );
