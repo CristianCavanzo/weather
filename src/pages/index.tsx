@@ -1,13 +1,32 @@
 import { HomeComponent } from '@/components/pages/Home';
 import { useWeatherAPI } from '@/hooks/useWeather';
+import { Weather } from '@/models/weather';
 import { setWeather } from '@/redux/slices/weatherSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getDate } from '@/utils/createDate';
 import getGelocalization from '@/utils/getGeolocalization';
+import { getWeather } from '@/utils/getWeather';
+import popularPlaces from '@/utils/popularPlacesWeather';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Home = () => {
+export const getStaticProps: GetStaticProps<{
+    places: Weather[];
+}> = async () => {
+    try {
+        const places = await Promise.all(
+            popularPlaces.map(
+                async (place) => (await getWeather(place.lat, place.lon)).data
+            )
+        );
+        return { props: { places }, revalidate: 600 };
+    } catch (error) {
+        return { props: { places: [] } };
+    }
+};
+
+const Home = ({ places }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const dispatch = useDispatch<AppDispatch>();
     const weather = useSelector((store: RootState) => store.weather.condition);
     const [geolocalization, setGeolocalization] = useState({
@@ -33,7 +52,7 @@ const Home = () => {
     if (weatherData.loading) return <h1>Loading...</h1>;
     if (weatherData.error) return <h1>error</h1>;
     return (
-        <HomeComponent condition={condition} date={date} weather={weather} />
+        <HomeComponent places={places} condition={condition} date={date} weather={weather} />
     );
 };
 

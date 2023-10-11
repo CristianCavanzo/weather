@@ -1,22 +1,24 @@
 import React from 'react';
 import { Map } from '@/components/SVG';
-import { WeatherSlice } from '@/models/weather';
+import { Weather, WeatherSlice } from '@/models/weather';
 import { HomeStyled } from './styled-component';
 import { categoriasClima } from '@/utils/weatherCategories';
 import Image from 'next/image';
 import { WeatherRecommended } from '@/components/card';
-import popularPlaces from '@/utils/popularPlacesWeather';
 
 interface Props {
     weather: WeatherSlice['condition'];
     condition: WeatherSlice['condition']['current']['condition'];
     date: string;
+    places: Weather[];
 }
-const HomeComponent = ({ weather, date, condition }: Props) => {
+
+const HomeComponent = ({ weather, date, condition, places }: Props) => {
     const weatherCategory = categoriasClima.find(
         (clima) => clima?.code === condition?.code
     );
     const icon = `/img/${weatherCategory?.iconLocal}`;
+
     if (weather?.current) {
         return (
             <HomeStyled>
@@ -49,13 +51,9 @@ const HomeComponent = ({ weather, date, condition }: Props) => {
                 <p className="home__weather-feels">
                     Feels like {weather.current.feelslike_c}°c
                 </p>
-                {popularPlaces.map((place) => (
-                    <WeatherRecommended
-                        key={place.name}
-                        lat={place.lat}
-                        lon={place.lon}
-                    >
-                        {place.name}
+                {places.map((place) => (
+                    <WeatherRecommended key={place.location.name}>
+                        {place.location.name}
                     </WeatherRecommended>
                 ))}
             </HomeStyled>
