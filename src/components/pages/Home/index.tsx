@@ -51,11 +51,14 @@ const HomeComponent = ({ weather, date, condition, places }: Props) => {
                 <p className="home__weather-feels">
                     Feels like {weather.current.feelslike_c}°c
                 </p>
-                {places.map((place) => (
-                    <WeatherRecommended key={place.location.name}>
-                        {place.location.name}
-                    </WeatherRecommended>
-                ))}
+                <div className="recommeded_places">
+                    {places.map((place) => (
+                        <WeatherRecommended
+                            weather={place}
+                            key={place.location.name}
+                        />
+                    ))}
+                </div>
             </HomeStyled>
         );
     } else {

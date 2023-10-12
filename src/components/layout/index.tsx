@@ -7,8 +7,8 @@ const Header = styled.header`
 `;
 const LayoutComponent = styled.div`
     background: #181a1b;
-    height: calc(100vh - 14vh);
-    height: calc(100dvh - 14dvh);
+    min-height: calc(100vh - 14vh);
+    min-height: calc(100dvh - 14dvh);
     border-radius: 40px 40px 0 0;
     padding: 16px;
     @media (min-width: 500px) {

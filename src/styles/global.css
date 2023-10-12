@@ -14,3 +14,6 @@ html {
 body {
     background: #202325;
 }
+.a_withoutStyles{
+    text-decoration: none;
+}

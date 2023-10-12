@@ -28,6 +28,12 @@ export const HomeStyled = styled.section`
         align-items: center;
         column-gap: 8px;
     }
-    .home__weather-feels {
+    .recommeded_places {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        div {
+            flex: 1;
+        }
     }
 `;
