@@ -1,0 +1,50 @@
+import { FavoriteWeatherSlice } from '@/models/favoritePlacesWeather';
+import { Weather } from '@/models/weather';
+import { initialWeather } from '@/utils/initialWeather';
+import popularPlaces from '@/utils/popularPlacesWeather';
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState: FavoriteWeatherSlice[] = popularPlaces.map((place) => ({
+    expiration: null,
+    location: { ...place },
+    weather: initialWeather,
+}));
+
+interface AddWeatherTime {
+    payload: FavoriteWeatherSlice;
+}
+
+const favoritePlacesWeather = createSlice({
+    name: 'favoriteWeather',
+    initialState,
+    reducers: {
+        addWeatherTime: (state, action: AddWeatherTime) => {
+            const location = action.payload.location;
+            const weatherIndex = state.findIndex(
+                (weather) =>
+                    weather.location.lat === location.lat &&
+                    weather.location.lon === location.lon
+            );
+            if (weatherIndex !== -1) {
+                state[weatherIndex].weather = action.payload.weather;
+            } else {
+                const newWeather: FavoriteWeatherSlice = {
+                    expiration: action.payload.expiration,
+                    location: {
+                        name: location.name,
+                        lat: location.lat,
+                        lon: location.lon,
+                    },
+                    weather: action.payload.weather,
+                };
+                state.push(newWeather);
+            }
+        },
+        getAllWeather: (state) => {
+            return state;
+        },
+    },
+});
+
+export default favoritePlacesWeather.reducer;
+export const { addWeatherTime, getAllWeather } = favoritePlacesWeather.actions;

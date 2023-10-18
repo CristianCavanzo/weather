@@ -1,4 +1,6 @@
-export const initialWeather = {
+import { Weather } from "@/models/weather";
+
+export const initialWeather: Weather = {
     location: {
         name: '',
         region: '',

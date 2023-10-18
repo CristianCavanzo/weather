@@ -1,34 +1,20 @@
 import { HomeComponent } from '@/components/pages/Home';
 import { useWeatherAPI } from '@/hooks/useWeather';
-import { Weather } from '@/models/weather';
+import { addWeatherTime } from '@/redux/slices/favoritePlacesWeatherSlice';
 import { setWeather } from '@/redux/slices/weatherSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getDate } from '@/utils/createDate';
 import getGelocalization from '@/utils/getGeolocalization';
 import { getWeather } from '@/utils/getWeather';
-import popularPlaces from '@/utils/popularPlacesWeather';
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const getStaticProps: GetStaticProps<{
-    places: Weather[];
-}> = async () => {
-    try {
-        const places = await Promise.all(
-            popularPlaces.map(
-                async (place) => (await getWeather(place.lat, place.lon)).data
-            )
-        );
-        return { props: { places }, revalidate: 600 };
-    } catch (error) {
-        return { props: { places: [] } };
-    }
-};
-
-const Home = ({ places }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
     const weather = useSelector((store: RootState) => store.weather.condition);
+    const places = useSelector(
+        (store: RootState) => store.favoritePlacesWeather
+    );
     const [geolocalization, setGeolocalization] = useState({
         longitude: 0,
         latitude: 0,
@@ -39,7 +25,31 @@ const Home = ({ places }: InferGetStaticPropsType<typeof getStaticProps>) => {
         geolocalization.longitude,
         'weather'
     );
+    useEffect(() => {
+        (async () => {
+            const expiration = new Date(new Date().getTime() + 20 * 60 * 1000);
+            const placesResponse = await Promise.all(
+                places.map(async (place) => {
+                    if (place.expiration && place.expiration > new Date())
+                        return place;
 
+                    const { data } = await getWeather(
+                        place.location.lat,
+                        place.location.lon
+                    );
+                    const newPlace = {
+                        location: place.location,
+                        weather: data,
+                        expiration,
+                    };
+                    return newPlace;
+                })
+            );
+            placesResponse.forEach((place) => {
+                dispatch(addWeatherTime(place));
+            });
+        })();
+    }, []);
     useEffect(() => {
         (async () => {
             const { latitude, longitude } = await getGelocalization();
@@ -51,8 +61,14 @@ const Home = ({ places }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const date = getDate(new Date());
     if (weatherData.loading) return <h1>Loading...</h1>;
     if (weatherData.error) return <h1>error</h1>;
+
     return (
-        <HomeComponent places={places} condition={condition} date={date} weather={weather} />
+        <HomeComponent
+            places={[]}
+            condition={condition}
+            date={date}
+            weather={weather}
+        />
     );
 };
 
