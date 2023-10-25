@@ -13,6 +13,9 @@ const initialState: FavoriteWeatherSlice[] = popularPlaces.map((place) => ({
 interface AddWeatherTime {
     payload: FavoriteWeatherSlice;
 }
+interface AddWeathersTime {
+    payload: FavoriteWeatherSlice[];
+}
 
 const favoritePlacesWeather = createSlice({
     name: 'favoriteWeather',
@@ -40,6 +43,23 @@ const favoritePlacesWeather = createSlice({
                 state.push(newWeather);
             }
         },
+        addWeathersTime: (state, action: AddWeathersTime) => {
+            const newWeathers = action.payload;
+            newWeathers.forEach((newWeather) => {
+                const location = newWeather.location;
+                const weatherIndex = state.findIndex(
+                    (weather) =>
+                        weather.location.lat === location.lat &&
+                        weather.location.lon === location.lon
+                );
+                if (weatherIndex !== -1) {
+                    state[weatherIndex].weather = newWeather.weather;
+                    state[weatherIndex].expiration = newWeather.expiration;
+                } else {
+                    state.push(newWeather);
+                }
+            });
+        },
         getAllWeather: (state) => {
             return state;
         },
@@ -47,4 +67,5 @@ const favoritePlacesWeather = createSlice({
 });
 
 export default favoritePlacesWeather.reducer;
-export const { addWeatherTime, getAllWeather } = favoritePlacesWeather.actions;
+export const { addWeatherTime, getAllWeather, addWeathersTime } =
+    favoritePlacesWeather.actions;

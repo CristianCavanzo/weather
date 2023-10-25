@@ -5,12 +5,13 @@ import { HomeStyled } from './styled-component';
 import { categoriasClima } from '@/utils/weatherCategories';
 import Image from 'next/image';
 import { WeatherRecommended } from '@/components/card';
+import { FavoriteWeatherSlice } from '@/models/favoritePlacesWeather';
 
 interface Props {
     weather: WeatherSlice['condition'];
     condition: WeatherSlice['condition']['current']['condition'];
     date: string;
-    places: Weather[];
+    places: FavoriteWeatherSlice[];
 }
 
 const HomeComponent = ({ weather, date, condition, places }: Props) => {
@@ -54,7 +55,7 @@ const HomeComponent = ({ weather, date, condition, places }: Props) => {
                 <div className="recommeded_places">
                     {places.map((place) => (
                         <WeatherRecommended
-                            weather={place}
+                            weather={place.weather}
                             key={place.location.name}
                         />
                     ))}

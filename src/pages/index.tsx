@@ -1,6 +1,9 @@
 import { HomeComponent } from '@/components/pages/Home';
 import { useWeatherAPI } from '@/hooks/useWeather';
-import { addWeatherTime } from '@/redux/slices/favoritePlacesWeatherSlice';
+import {
+    addWeatherTime,
+    addWeathersTime,
+} from '@/redux/slices/favoritePlacesWeatherSlice';
 import { setWeather } from '@/redux/slices/weatherSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getDate } from '@/utils/createDate';
@@ -19,6 +22,7 @@ const Home = () => {
         longitude: 0,
         latitude: 0,
     });
+    const expiration = new Date().toString();
 
     const weatherData = useWeatherAPI(
         geolocalization.latitude,
@@ -27,12 +31,8 @@ const Home = () => {
     );
     useEffect(() => {
         (async () => {
-            const expiration = new Date(new Date().getTime() + 20 * 60 * 1000);
             const placesResponse = await Promise.all(
                 places.map(async (place) => {
-                    if (place.expiration && place.expiration > new Date())
-                        return place;
-
                     const { data } = await getWeather(
                         place.location.lat,
                         place.location.lon
@@ -45,9 +45,7 @@ const Home = () => {
                     return newPlace;
                 })
             );
-            placesResponse.forEach((place) => {
-                dispatch(addWeatherTime(place));
-            });
+            dispatch(addWeathersTime(placesResponse));
         })();
     }, []);
     useEffect(() => {
@@ -64,7 +62,7 @@ const Home = () => {
 
     return (
         <HomeComponent
-            places={[]}
+            places={places}
             condition={condition}
             date={date}
             weather={weather}
