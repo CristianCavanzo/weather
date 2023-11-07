@@ -32,8 +32,5 @@ export const HomeStyled = styled.section`
         display: flex;
         gap: 16px;
         flex-wrap: wrap;
-        div {
-            flex: 1;
-        }
     }
 `;

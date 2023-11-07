@@ -137,7 +137,7 @@ export const categoriasClima = [
         day: 'Light rain',
         night: 'Light rain',
         icon: 296,
-        iconLocal: 'NightRain.png',
+        iconLocal: 'DayRain.png',
     },
     {
         code: 1186,

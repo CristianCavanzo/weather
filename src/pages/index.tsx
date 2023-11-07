@@ -33,10 +33,18 @@ const Home = () => {
         (async () => {
             const placesResponse = await Promise.all(
                 places.map(async (place) => {
+                    let date = null;
+
+                    if (typeof place.expiration === 'string') {
+                        date = new Date(place.expiration);
+                    }
+
+                    if (date && date < new Date()) return place;
                     const { data } = await getWeather(
                         place.location.lat,
                         place.location.lon
                     );
+
                     const newPlace = {
                         location: place.location,
                         weather: data,

@@ -8,9 +8,13 @@ export const Card = styled.div`
     padding: 20px 12px;
     border-radius: 16px;
     background: #292c2d;
-    max-width: 300px;
-    min-width: 200px;
+    min-width: 180px;
     cursor: pointer;
+    column-gap: 12px;
+    .weather__card-icon {
+        display: flex;
+        justify-content: flex-end;
+    }
     :hover {
         box-shadow: 0px 0px 10px 4px #1d1d1d;
     }
