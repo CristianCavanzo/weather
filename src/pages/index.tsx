@@ -1,9 +1,6 @@
 import { HomeComponent } from '@/components/pages/Home';
 import { useWeatherAPI } from '@/hooks/useWeather';
-import {
-    addWeatherTime,
-    addWeathersTime,
-} from '@/redux/slices/favoritePlacesWeatherSlice';
+import { addWeathersTime } from '@/redux/slices/favoritePlacesWeatherSlice';
 import { setWeather } from '@/redux/slices/weatherSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getDate } from '@/utils/createDate';
@@ -18,6 +15,7 @@ const Home = () => {
     const places = useSelector(
         (store: RootState) => store.favoritePlacesWeather
     );
+
     const [geolocalization, setGeolocalization] = useState({
         longitude: 0,
         latitude: 0,
@@ -40,13 +38,19 @@ const Home = () => {
                     }
 
                     if (date && date < new Date()) return place;
+
                     const { data } = await getWeather(
-                        place.location.lat,
-                        place.location.lon
+                        Number(place.location.lat),
+                        Number(place.location.lon)
                     );
 
                     const newPlace = {
-                        location: place.location,
+                        location: {
+                            ...place.location,
+                            lat: Number(place.location.lat.toFixed(2)),
+                            lon: Number(place.location.lon.toFixed(2)),
+                        },
+
                         weather: data,
                         expiration,
                     };

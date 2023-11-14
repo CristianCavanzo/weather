@@ -1,17 +1,24 @@
-import { RootState } from '@/redux/store';
+import usePlace from '@/hooks/usePlace';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const Location = () => {
+    const [place, setPlace] = usePlace([]);
     const { query } = useRouter();
-    const places = useSelector(
-        (store: RootState) => store.favoritePlacesWeather
-    );
-    if (typeof query.id !== 'string') return <div>no hay id</div>;
-    const [lat, lon] = query.id.split('&') as string[];
-    console.log(lat, lon);
-    
+
+    useEffect(() => {
+        if (typeof query.id !== 'string') {
+            console.log('no hay id');
+            return;
+        }
+        const [latQuery, lonQuery] = query.id.split('&') as string[];
+        const lat = latQuery.split('=')[1];
+        const lon = lonQuery.split('=')[1];
+        console.log(lat, lon);
+
+        setPlace({ lat, lon });
+    }, [query.id]);
+    console.log(place);
     return <div>Hola</div>;
 };
 

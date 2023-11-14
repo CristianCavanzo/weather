@@ -3,7 +3,6 @@ import { Weather } from '@/models/weather';
 import { initialWeather } from '@/utils/initialWeather';
 import popularPlaces from '@/utils/popularPlacesWeather';
 import { createSlice } from '@reduxjs/toolkit';
-
 const initialState: FavoriteWeatherSlice[] = popularPlaces.map((place) => ({
     expiration: null,
     location: { ...place },
@@ -49,8 +48,9 @@ const favoritePlacesWeather = createSlice({
                 const location = newWeather.location;
                 const weatherIndex = state.findIndex(
                     (weather) =>
-                        weather.location.lat === location.lat &&
-                        weather.location.lon === location.lon
+                        Number(weather.location.lat.toFixed(2)) ===
+                            location.lat &&
+                        Number(weather.location.lon.toFixed(2)) === location.lon
                 );
                 if (weatherIndex !== -1) {
                     state[weatherIndex].weather = newWeather.weather;
